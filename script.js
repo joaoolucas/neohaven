@@ -79,4 +79,118 @@ setInterval(draw, 33);
 window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+});
+
+// Entrance Portal Handler
+class EntrancePortal {
+    constructor() {
+        this.terminal = document.querySelector('.terminal-text');
+        this.input = document.querySelector('#access-code');
+        this.messages = [
+            "ESTABLISHING CONNECTION...",
+            "SCANNING BIOMETRIC DATA...",
+            "IDENTITY VERIFICATION REQUIRED",
+            "ENTER ACCESS CODE TO PROCEED"
+        ];
+        this.messageIndex = 0;
+        this.init();
+    }
+
+    init() {
+        this.typeWriter();
+        this.input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.validateCode(this.input.value);
+            }
+        });
+    }
+
+    typeWriter() {
+        if (this.messageIndex < this.messages.length) {
+            const message = this.messages[this.messageIndex];
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < message.length) {
+                    this.terminal.innerHTML += message.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                    this.terminal.innerHTML += '<br>';
+                    this.messageIndex++;
+                    setTimeout(() => this.typeWriter(), 1000);
+                }
+            }, 50);
+        }
+    }
+
+    validateCode(code) {
+        if (code.toLowerCase() === 'access') {
+            document.querySelector('.entrance-portal').style.opacity = '0';
+            setTimeout(() => {
+                document.querySelector('.entrance-portal').style.display = 'none';
+            }, 500);
+        } else {
+            this.input.value = '';
+            this.input.placeholder = 'INVALID CODE - TRY AGAIN';
+        }
+    }
+}
+
+// AI Bartender Chat
+class AIBartender {
+    constructor() {
+        this.chatMessages = document.querySelector('.chat-messages');
+        this.input = document.querySelector('.chat-input input');
+        this.sendBtn = document.querySelector('.send-btn');
+        this.responses = {
+            'hello': 'Welcome to NeoHaven. What's your poison?',
+            'menu': 'Check out our DIGITAL ELIXIRS section above. The Neural Surge is particularly popular tonight.',
+            'help': 'Need directions? The VIP Lounge is upstairs, Hackers' Den in the basement. Watch your step.',
+            'default': 'Interesting... *continues cleaning glass with a cybernetic hand*'
+        };
+        this.init();
+    }
+
+    init() {
+        this.sendBtn.addEventListener('click', () => this.handleMessage());
+        this.input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.handleMessage();
+        });
+    }
+
+    handleMessage() {
+        const message = this.input.value.toLowerCase();
+        if (!message) return;
+
+        this.addMessage('user', message);
+        this.input.value = '';
+
+        setTimeout(() => {
+            const response = this.responses[message] || this.responses.default;
+            this.addMessage('bartender', response);
+        }, 1000);
+    }
+
+    addMessage(sender, text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        messageDiv.textContent = text;
+        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+}
+
+// Initialize new features
+document.addEventListener('DOMContentLoaded', () => {
+    new EntrancePortal();
+    new AIBartender();
+
+    // Room interactions
+    document.querySelectorAll('.room').forEach(room => {
+        room.addEventListener('click', () => {
+            const roomType = room.dataset.room;
+            // Add your room-specific interactions here
+            console.log(`Accessing ${roomType} room...`);
+        });
+    });
 }); 

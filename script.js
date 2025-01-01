@@ -81,42 +81,6 @@ window.addEventListener('resize', () => {
     height = canvas.height = window.innerHeight;
 });
 
-// Entrance Portal Handler
-class EntrancePortal {
-    constructor() {
-        this.terminal = document.querySelector('.terminal-text');
-        this.portal = document.querySelector('.entrance-portal');
-        this.init();
-    }
-
-    init() {
-        const messages = [
-            "SCANNING VISITOR...",
-            "VERIFYING IDENTITY...",
-            "SECURITY CHECK COMPLETE",
-            "> ACCESS GRANTED"
-        ];
-        
-        let currentMessage = 0;
-        
-        const showMessage = () => {
-            if (currentMessage >= messages.length) {
-                setTimeout(() => {
-                    this.portal.style.opacity = '0';
-                    setTimeout(() => this.portal.style.display = 'none', 500);
-                }, 400);
-                return;
-            }
-            
-            this.terminal.innerHTML += messages[currentMessage] + '<br>';
-            currentMessage++;
-            setTimeout(showMessage, 800);
-        };
-        
-        showMessage();
-    }
-}
-
 // AI Bartender Chat
 class AIBartender {
     constructor() {
@@ -163,7 +127,6 @@ class AIBartender {
 
 // Initialize new features
 document.addEventListener('DOMContentLoaded', () => {
-    new EntrancePortal();
     new AIBartender();
 
     // Room interactions

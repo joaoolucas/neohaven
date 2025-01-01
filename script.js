@@ -85,12 +85,16 @@ window.addEventListener('resize', () => {
 class EntrancePortal {
     constructor() {
         this.terminal = document.querySelector('.terminal-text');
-        this.input = document.querySelector('#access-code');
+        this.portal = document.querySelector('.entrance-portal');
         this.messages = [
             "ESTABLISHING CONNECTION...",
-            "SCANNING BIOMETRIC DATA...",
-            "IDENTITY VERIFICATION REQUIRED",
-            "ENTER ACCESS CODE TO PROCEED"
+            "SCANNING ENVIRONMENT...",
+            "INITIALIZING SECURITY PROTOCOLS...",
+            "LOADING NEURAL INTERFACE...",
+            "CALIBRATING QUANTUM MATRICES...",
+            "SYNCHRONIZING DATASTREAMS...",
+            "ACCESSING NEOHAVEN MAINFRAME...",
+            "WELCOME TO NEOHAVEN"
         ];
         this.messageIndex = 0;
         this.init();
@@ -98,11 +102,6 @@ class EntrancePortal {
 
     init() {
         this.typeWriter();
-        this.input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.validateCode(this.input.value);
-            }
-        });
     }
 
     typeWriter() {
@@ -115,24 +114,25 @@ class EntrancePortal {
                     i++;
                 } else {
                     clearInterval(typing);
-                    this.terminal.innerHTML += '<br>';
+                    this.terminal.innerHTML += '<br><br>';
                     this.messageIndex++;
-                    setTimeout(() => this.typeWriter(), 1000);
+                    if (this.messageIndex < this.messages.length) {
+                        setTimeout(() => this.typeWriter(), 800);
+                    } else {
+                        this.completeLoading();
+                    }
                 }
             }, 50);
         }
     }
 
-    validateCode(code) {
-        if (code.toLowerCase() === 'access') {
-            document.querySelector('.entrance-portal').style.opacity = '0';
+    completeLoading() {
+        setTimeout(() => {
+            this.portal.style.opacity = '0';
             setTimeout(() => {
-                document.querySelector('.entrance-portal').style.display = 'none';
+                this.portal.style.display = 'none';
             }, 500);
-        } else {
-            this.input.value = '';
-            this.input.placeholder = 'INVALID CODE - TRY AGAIN';
-        }
+        }, 1000);
     }
 }
 

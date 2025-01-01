@@ -86,48 +86,34 @@ class EntrancePortal {
     constructor() {
         this.terminal = document.querySelector('.terminal-text');
         this.portal = document.querySelector('.entrance-portal');
-        this.messages = [
+        this.init();
+    }
+
+    init() {
+        const messages = [
             "SCANNING VISITOR...",
             "VERIFYING IDENTITY...",
             "SECURITY CHECK COMPLETE",
             "> ACCESS GRANTED"
         ];
-        this.messageIndex = 0;
-        this.init();
-    }
-
-    init() {
-        this.typeWriter();
-    }
-
-    typeWriter() {
-        if (this.messageIndex >= this.messages.length) {
-            this.completeLoading();
-            return;
-        }
-
-        const message = this.messages[this.messageIndex];
-        let i = 0;
-        const typing = setInterval(() => {
-            if (i < message.length) {
-                this.terminal.innerHTML += message.charAt(i);
-                i++;
-            } else {
-                clearInterval(typing);
-                this.terminal.innerHTML += '<br>';
-                this.messageIndex++;
-                setTimeout(() => this.typeWriter(), 400);
+        
+        let currentMessage = 0;
+        
+        const showMessage = () => {
+            if (currentMessage >= messages.length) {
+                setTimeout(() => {
+                    this.portal.style.opacity = '0';
+                    setTimeout(() => this.portal.style.display = 'none', 500);
+                }, 400);
+                return;
             }
-        }, 30);
-    }
-
-    completeLoading() {
-        setTimeout(() => {
-            this.portal.style.opacity = '0';
-            setTimeout(() => {
-                this.portal.style.display = 'none';
-            }, 500);
-        }, 400);
+            
+            this.terminal.innerHTML += messages[currentMessage] + '<br>';
+            currentMessage++;
+            setTimeout(showMessage, 800);
+        };
+        
+        showMessage();
     }
 }
 

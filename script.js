@@ -93,8 +93,7 @@ class EntrancePortal {
             "LOADING NEURAL INTERFACE...",
             "CALIBRATING QUANTUM MATRICES...",
             "SYNCHRONIZING DATASTREAMS...",
-            "ACCESSING NEOHAVEN MAINFRAME...",
-            "WELCOME TO NEOHAVEN"
+            "ACCESS GRANTED"
         ];
         this.messageIndex = 0;
         this.init();
@@ -105,25 +104,24 @@ class EntrancePortal {
     }
 
     typeWriter() {
-        if (this.messageIndex < this.messages.length) {
-            const message = this.messages[this.messageIndex];
-            let i = 0;
-            const typing = setInterval(() => {
-                if (i < message.length) {
-                    this.terminal.innerHTML += message.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typing);
-                    this.terminal.innerHTML += '<br><br>';
-                    this.messageIndex++;
-                    if (this.messageIndex < this.messages.length) {
-                        setTimeout(() => this.typeWriter(), 800);
-                    } else {
-                        this.completeLoading();
-                    }
-                }
-            }, 50);
+        if (this.messageIndex >= this.messages.length) {
+            this.completeLoading();
+            return;
         }
+
+        const message = this.messages[this.messageIndex];
+        let i = 0;
+        const typing = setInterval(() => {
+            if (i < message.length) {
+                this.terminal.innerHTML += message.charAt(i);
+                i++;
+            } else {
+                clearInterval(typing);
+                this.terminal.innerHTML += '<br><br>';
+                this.messageIndex++;
+                setTimeout(() => this.typeWriter(), 800);
+            }
+        }, 50);
     }
 
     completeLoading() {

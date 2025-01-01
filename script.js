@@ -87,13 +87,10 @@ class EntrancePortal {
         this.terminal = document.querySelector('.terminal-text');
         this.portal = document.querySelector('.entrance-portal');
         this.messages = [
-            "ESTABLISHING CONNECTION...",
-            "SCANNING ENVIRONMENT...",
-            "INITIALIZING SECURITY PROTOCOLS...",
-            "LOADING NEURAL INTERFACE...",
-            "CALIBRATING QUANTUM MATRICES...",
-            "SYNCHRONIZING DATASTREAMS...",
-            "ACCESS GRANTED"
+            "SCANNING VISITOR...",
+            "VERIFYING IDENTITY...",
+            "SECURITY CHECK COMPLETE",
+            "> ACCESS GRANTED"
         ];
         this.messageIndex = 0;
         this.init();
@@ -117,11 +114,11 @@ class EntrancePortal {
                 i++;
             } else {
                 clearInterval(typing);
-                this.terminal.innerHTML += '<br><br>';
+                this.terminal.innerHTML += '<br>';
                 this.messageIndex++;
-                setTimeout(() => this.typeWriter(), 800);
+                setTimeout(() => this.typeWriter(), 400);
             }
-        }, 50);
+        }, 30);
     }
 
     completeLoading() {
@@ -130,7 +127,7 @@ class EntrancePortal {
             setTimeout(() => {
                 this.portal.style.display = 'none';
             }, 500);
-        }, 1000);
+        }, 400);
     }
 }
 
